@@ -1,6 +1,6 @@
 from os import getenv
 from pathlib import Path
-
+ 
 import mysql.connector as mc
 from dotenv import load_dotenv
 from mysql.connector import Error
@@ -10,6 +10,7 @@ class Database:
     """
     Classe que gerencia conexões e operações com um banco de dados MySQL
     """
+ 
     def __init__(self):
         load_dotenv()
         self.host = getenv('DB_HOST')
@@ -18,6 +19,7 @@ class Database:
         self.database = getenv('DB_SCHEMA')
         self.connection = None
         self.cursor = None
+ 
  
     def conectar(self) -> None:
         """Estabelece uma conexão com o banco de dados MySQL"""
@@ -37,6 +39,7 @@ class Database:
             self.connection = None
             self.cursor = None
  
+ 
     def desconectar(self) -> None:
         """Encerra a conexão com o banco de dados e o cursor, se existirem"""
         if self.cursor:
@@ -44,6 +47,7 @@ class Database:
         if self.connection:
             self.connection.close()
         print('Conexão encerrada com sucesso!')
+ 
  
     def executar(self, sql, params = None):
         """Executa uma instrução do banco de dados."""
@@ -64,24 +68,23 @@ class Database:
         except Error as e:
             print(f'Erro de execução: {e}')
             return
-
-    # Método de entrada de contexto (para uso com `with`)
+ 
+    # Método de entrada no contexto (para uso com `with`)
     def __enter__(self):
         self.conectar()
         return self
-
+ 
     # Método de saída de contexto (para uso com `with`)
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.desconectar()
-
+ 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SQL_PATH = BASE_DIR / "data" / "tarefas.sql"
-
+ 
 def init_db(sql_filepath=SQL_PATH):
     """Função responsável por inicializar o schema (database) no banco de dados."""
-
     load_dotenv()
-
+ 
     try:
         conexao = mc.connect(
             host = getenv('DB_HOST'),
@@ -91,28 +94,33 @@ def init_db(sql_filepath=SQL_PATH):
         cursor = conexao.cursor()
  
         # Leitura do arquivo de criação do banco
-        with open(sql_filepath, 'r', encoding='utf-8') as arquivo: 
-            # Gerenciador de contexto, criando uma variavel local, 
-            # e em sequencia descartando-a
+        with open(sql_filepath, 'r', encoding = 'utf-8') as arquivo: # Gerenciador de contexto, criando uma variavel local, e em sequencia descartando-a
             sql = arquivo.read()
-
-        cursor.execute(sql)
+       
+        cursor.execute(sql, map_results= True)
         conexao.commit()
-
-        print('Schema e tabelas inicializando com sucesso')
+ 
+        print('Schema e tabelas inicializadas com sucesso')
         cursor.close()
         conexao.close()
-
+       
+ 
     except Error as e:
         print(f'Erro no banco de dados: {e}')
     except FileNotFoundError:
-        print('O arquivo especificado não pode ser encontrado.')    
-
+        print('O arquivo especificado não pôde ser encontrado.')
+       
+       
+ 
+ 
+ 
 # Área 51
-        """Tudo o que for escrito dessa área
+        """
+        Tudo o que for escrito dessa área
         será lido e executado como string.
         """
-# db = Database()
-# db.conectar()
-# print(db.executar('SELECT * FROM tipos_combustivel'))
-# db.desconectar()
+"""db = Database()
+db.conectar()
+print(db.executar('SELECT * FROM tipos_combustivel;'))
+db.desconectar()
+"""
