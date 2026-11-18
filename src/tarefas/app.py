@@ -16,8 +16,8 @@ def test():
 def home():
 
     if request.method == 'POST':
-        titulo_form = request.form['tituloTarefa'] # casa com o nome do input no form
-        data_conclusao_form = request.form['dataConclusao'] # Casa com o nome do input no form
+        titulo_form = request.form['tituloTarefa'] # Casa com o nome do input no form
+        data_conclusao_form = request.form['dataConclusao']
 
         data_corrigida = data_conclusao_form or None
 
@@ -29,19 +29,48 @@ def home():
 
         return redirect(url_for('home'))
 
-    tarefas = Tarefa.listarTarefas()
+    tarefas= Tarefa.listarTarefas()
 
-    return render_template('base.html', 
-                           titulo_da_pagina='Home', 
-                           tarefas_da_pagina=tarefas
-                           )
+    return render_template(
+        'base.html',
+        titulo_da_pagina='Minha lista', 
+        tarefas_da_pagina=tarefas,
+        button_submit="Adicionar",
+        botao_voltar="display: none",
+    )
 
-# Crie uma nova funcionalidade para apagar cada uma das tarefas cadastradas
 @app.route('/delete/<int:id>')
 def apagar_id_especificado(id):
     Tarefa.apagarTarefa(id)
     
     return redirect('/')
 
+@app.route('/edit/<int:id_tarefa>', methods=['GET', 'POST']) 
+def editar_id_especificado(id_tarefa):
+
+    if request.method == 'POST':
+        titulo_form = request.form['tituloTarefa']
+        data_conclusao_form = request.form['dataConclusao']
+
+        data_corrigida = data_conclusao_form or None
+
+        tarefa = Tarefa(
+            titulo=titulo_form,
+            id=id_tarefa,
+            data_conclusao=data_corrigida
+        )
+
+        tarefa.editarTarefas()
+
+        return redirect(url_for('home'))
+    return render_template(
+        "base.html",
+        titulo_da_pagina="Minha lista de tarefas",
+        tarefas_da_pagina={"titulo_tarefa:": None, "data_conclusao": None},
+        button_submit="Atualizar",
+        lista="display: none",
+
+    )
 if __name__ == '__main__':
+
     app.run()
