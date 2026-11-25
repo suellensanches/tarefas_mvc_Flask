@@ -15,11 +15,9 @@ class Tarefa:
         """Salvar a tarefa no banco de dados."""
 
         sql = 'INSERT INTO tarefa (titulo_tarefa, data_conclusao) VALUES (%s, %s);'
-        params = (self.titulo, self.data_conclusao) # Protege contra SQL Injection
+        params = (self.titulo, self.data_conclusao)
 
 
-        # Gerenciador de contexto (with)
-        # Acessa os métodos __enter__ e __exit__ da classe
         with Database() as db:
             db.executar(sql, params)
 
@@ -43,12 +41,9 @@ class Tarefa:
             db.executar(sql, params)
 
     def editarTarefas(self):
-        sql = 'UPDATE tarefa SET titulo_tarefa = %s, data_conclusao = %s WHERE id_tarefa = %s; '  
+        sql = '''UPDATE tarefa SET titulo_tarefa =
+          %s, data_conclusao = %s WHERE id_tarefa = %s; '''
         params = (self.titulo, self.data_conclusao, self.id)
 
         with Database() as db:
             return(db.executar(sql, params))
-
-# Área 51 (testes)
-# tarefa = Tarefa('Minha nova tarefa')
-# tarefa.salvarTarefa()

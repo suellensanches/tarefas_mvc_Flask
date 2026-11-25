@@ -8,15 +8,17 @@
 </head>
 <body>
     <h1> TaskIA </h1>
-    <form method="POST"> <!--Seleciona o método HTTP-->
+    <form method="POST">
         <input type="text" id="tituloTarefa" name="tituloTarefa">
         <input type="date" id="dataConclusao" name="dataConclusao">
-        <button type="submit" onclick="adicionarTarefa()">{{ button_submit }}</button>
+        <button type="submit" onclick="adicionarTarefa()">
+            {{ button_submit }}
+        </button>
         <a href="/" class="botao-voltar" style="{{ botao_voltar }}">
         <span class="botao-voltar__icone" aria-hidden="true">←</span>
         <span>Voltar para tarefas</span>
 </a>
-        <!-- <output id="listaTarefas">Nenhuma tarefa cadastrada</output> -->
+      
     </form>
     
     <ul id="listaTarefas" style="{{ lista }}">
@@ -28,76 +30,5 @@
             </li>
         {% endfor %}
     </ul>
- 
-    <!-- <script>
-        // Aplicação MVC (Modelagem-Visualização)
- 
-        // Seção de Modelagem
-        let tarefas;
-        const tarefasSalvas = JSON.parse(localStorage.getItem('tarefas'));
- 
-        if (Array.isArray(tarefasSalvas)) {
-            tarefas = tarefasSalvas
-        } else {
-            tarefas = [];
-        }
- 
-        function salvarTarefas() {
-            localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        }
- 
-        // Seção de Visualização
-        function renderizarTarefas() {
-            const listaTarefas = document.getElementById('listaTarefas');
-            listaTarefas.innerHTML = "";
- 
-            tarefas.forEach(function (tarefa) {
-                const divTarefa = document.createElement('div');
-                divTarefa.innerHTML = tarefa.tituloTarefa + ' - ' + tarefa.dataConclusao;
- 
-                const botaoApagar = document.createElement('button');
-                botaoApagar.innerHTML = "❌ Apagar";
-                botaoApagar.onclick = apagarTarefa;
-                botaoApagar.id = tarefa.idTarefa;
- 
-                divTarefa.appendChild(botaoApagar);
-                listaTarefas.appendChild(divTarefa);
-            });
-        }
- 
-        // Seção de Controle
-        function adicionarTarefa() {
-            const tituloTarefa = document.getElementById('tituloTarefa').value;
-            const dataConclusao = document.getElementById('dataConclusao').value;
- 
-            tarefas.push(
-                {
-                    tituloTarefa: tituloTarefa,
-                    dataConclusao: dataConclusao,
-                    idTarefa: Date.now()
-                }
-            )
- 
-            salvarTarefas();
-            renderizarTarefas();
-        }
- 
-        function apagarTarefa(evento) {
-            const botaoClicado = evento.target;
-            const idTarefa = botaoClicado.id;
-            tarefas = tarefas.filter(function (tarefa) {
-                if (tarefa.idTarefa == idTarefa) {
-                    return false;
-                } else {
-                    return true;
-                }
-            })
- 
-            salvarTarefas();
-            renderizarTarefas();
-        }
- 
-        renderizarTarefas();
-    </script> -->
 </body>
 </html>

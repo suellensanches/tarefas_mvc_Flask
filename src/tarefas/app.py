@@ -16,15 +16,13 @@ def test():
 def home():
 
     if request.method == 'POST':
-        titulo_form = request.form['tituloTarefa'] # Casa com o nome do input no form
+        titulo_form = request.form['tituloTarefa']
         data_conclusao_form = request.form['dataConclusao']
 
         data_corrigida = data_conclusao_form or None
 
-        # Instanciamos uma nova tarefa com os dados recebidos do form
         tarefa = Tarefa(titulo=titulo_form, data_conclusao=data_corrigida)
 
-        # Salvamos a tarefa no banco
         tarefa.salvarTarefa()
 
         return redirect(url_for('home'))
