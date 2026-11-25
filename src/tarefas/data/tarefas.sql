@@ -7,6 +7,3 @@ CREATE TABLE IF NOT EXISTS `tarefa` (
     `titulo_tarefa` VARCHAR(100) NOT NULL,
     `data_conclusao` DATETIME NULL
 );
-
-ALTER TABLE `tarefa`
-    MODIFY `id_tarefa` BIGINT NOT NULL AUTO_INCREMENT;
